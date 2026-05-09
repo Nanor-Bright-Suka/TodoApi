@@ -3,6 +3,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TodoApi.Models;
 using TodoApi.Services;
+using TodoApi.Dto;
 
 namespace TodoApi.Controllers;
 
@@ -30,18 +31,18 @@ public class TodoController : ControllerBase
 
 
     [HttpPost]
-   public async Task<ActionResult<TodoItem>> CreateTodo(TodoItem newTodo)
+   public async Task<ActionResult<CreateTodoResponseDto>> CreateTodo(CreateTodoRequestDto createTodoDto)
   {
-   var createdTodo = await _service.Create(newTodo);
+   var createdTodo = await _service.Create(createTodoDto);
     return Created($"/api/todos/{createdTodo.Id}", createdTodo);
   }
 
 
 
     [HttpPut("{id}")]
-   public async Task<ActionResult<TodoItem>> UpdateTodo(int id, TodoItem updatedTodo)
+   public async Task<ActionResult> UpdateTodo(int id, UpdateTodoRequestDto updateTodoDto)
     {
-    var updatedTodoItem = await _service.Update(id, updatedTodo);
+    var updatedTodoItem = await _service.Update(id, updateTodoDto);
         if (updatedTodoItem == null) return NotFound();
 
         return NoContent();
